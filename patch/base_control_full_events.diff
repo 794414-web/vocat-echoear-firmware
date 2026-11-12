@@ -1,0 +1,69 @@
+diff --git a/examples/xiaozhi-esp32/main/boards/esp_vocat/base_control.cc b/examples/xiaozhi-esp32/main/boards/esp_vocat/base_control.cc
+index bee774b..d1a15fd 100644
+--- a/examples/xiaozhi-esp32/main/boards/esp_vocat/base_control.cc
++++ b/examples/xiaozhi-esp32/main/boards/esp_vocat/base_control.cc
+@@ -152,11 +152,64 @@ void BaseControl::HandleCommand(uint8_t cmd, uint8_t *data, int data_len)
+                 ESP_LOGI(TAG, "Fish attached");
+                 emote_display->InsertAnimDialog("eat", 3500);
+                 break;
++            case VOCAT_BASE_CMD_RECV_SWITCH_FISH_DETACH:
++                ESP_LOGI(TAG, "Fish detached");
++                emote_display->SetEmotion("neutral");
++                break;
++            case VOCAT_BASE_CMD_RECV_SWITCH_ICE_CREAM_ATTACHED:
++                ESP_LOGI(TAG, "Ice cream attached");
++                emote_display->InsertAnimDialog("eat", 3500);
++                break;
++            case VOCAT_BASE_CMD_RECV_SWITCH_ICE_CREAM_DETACHED:
++                ESP_LOGI(TAG, "Ice cream detached");
++                emote_display->SetEmotion("neutral");
++                break;
++            case VOCAT_BASE_CMD_RECV_SWITCH_DONUT_ATTACHED:
++                ESP_LOGI(TAG, "Donut attached");
++                emote_display->InsertAnimDialog("eat", 3500);
++                break;
++            case VOCAT_BASE_CMD_RECV_SWITCH_DONUT_DETACHED:
++                ESP_LOGI(TAG, "Donut detached");
++                emote_display->SetEmotion("neutral");
++                break;
+             case VOCAT_BASE_CMD_RECV_SWITCH_PAIR_DETECT:
+                 ESP_LOGI(TAG, "Pair detect");
+                 emote_display->SetEmotion("happy");
+                 vocat_base_control_set_action(VOCAT_BASE_CMD_SET_ACTION_LOOK_AROUND);
+                 break;
++            case VOCAT_BASE_CMD_RECV_SWITCH_PAIR_CANCEL:
++                ESP_LOGI(TAG, "Pair cancelled");
++                emote_display->SetEmotion("neutral");
++                break;
++            case VOCAT_BASE_CMD_RECV_SWITCH_PLACE_FROM_UP:
++            case VOCAT_BASE_CMD_RECV_SWITCH_PLACE_FROM_DOWN:
++                ESP_LOGI(TAG, "Accessory placed from %s",
++                         event == VOCAT_BASE_CMD_RECV_SWITCH_PLACE_FROM_UP ? "up" : "down");
++                emote_display->InsertAnimDialog("insert", 3000);
++                break;
++            case VOCAT_BASE_CMD_RECV_SWITCH_REMOVE_FROM_UP:
++            case VOCAT_BASE_CMD_RECV_SWITCH_REMOVE_FROM_DOWN:
++                ESP_LOGI(TAG, "Accessory removed from %s",
++                         event == VOCAT_BASE_CMD_RECV_SWITCH_REMOVE_FROM_UP ? "up" : "down");
++                emote_display->SetEmotion("neutral");
++                break;
++            case VOCAT_BASE_CMD_RECV_SWITCH_IPHONE_LEAN_FRONT:
++                ESP_LOGI(TAG, "Phone leaning on front");
++                emote_display->SetEmotion("happy");
++                vocat_base_control_set_action(VOCAT_BASE_CMD_SET_ACTION_LOOK_AROUND);
++                break;
++            case VOCAT_BASE_CMD_RECV_SWITCH_IPHONE_LEAN_FRONT_DETACHED:
++                ESP_LOGI(TAG, "Phone leaning detached");
++                emote_display->SetEmotion("neutral");
++                break;
++            case VOCAT_BASE_CMD_RECV_SWITCH_IPHONE_UNDER_BASE:
++                ESP_LOGI(TAG, "Phone placed under base");
++                emote_display->InsertAnimDialog("insert", 3000);
++                break;
++            case VOCAT_BASE_CMD_RECV_SWITCH_IPHONE_UNDER_BASE_DETACHED:
++                ESP_LOGI(TAG, "Phone removed from under base");
++                emote_display->SetEmotion("neutral");
++                break;
+             default:
+                 ESP_LOGI(TAG, "Slide switch event: %d", event);
+                 break;
